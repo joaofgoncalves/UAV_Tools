@@ -3,19 +3,24 @@ library(Thermimage)
 library(exiftoolr)
 library(raster)
 library(tools)
+library(dplyr)
 
 
-getImageMetadata <- function(inputFolder, inputFileType="jpg"){
+getImageMetadata <- function(inputFolder, inputFileType="jpg", takeoffHeight=NULL){
   
   fl <- list.files(inputFolder,pattern = paste(".",inputFileType,"$",sep=""), full.names = TRUE)
   #print(fl)
   
-  outMetaData <- matrix(NA, nrow = length(fl),ncol = 7,
-                        dimnames=list(1:length(fl), c("fname","alt","lat","lon","roll","yaw","pitch")))
+  outMetaData <- matrix(NA, nrow = length(fl),ncol = 8,
+                        dimnames=list(1:length(fl), 
+						c("fname","alt","lat","lon","roll","yaw","pitch","ralt"))) %>% 
+    as.data.frame()
+  
   outMetaData <- as.data.frame(outMetaData)
   
   metaTags <- c("GPSAltitude","GPSLatitude","GPSLongitude",
-                "GimbalRollDegree","GimbalYawDegree","GimbalPitchDegree")
+                "GimbalRollDegree","GimbalYawDegree",
+				"GimbalPitchDegree","RelativeAltitude")
   
   cat("\n\nRetrieving image metadata:\n\n")
   
@@ -26,18 +31,28 @@ getImageMetadata <- function(inputFolder, inputFileType="jpg"){
     fname <- fl[i]
     exifInfo <- exif_read(fname, tags = metaTags)
     outMetaData[i, 1] <- basename(fname)
-    outMetaData[i, 2] <- exifInfo[1,"GPSAltitude"]
-    outMetaData[i, 3] <- exifInfo[1,"GPSLatitude"]
-    outMetaData[i, 4] <- exifInfo[1,"GPSLongitude"]
-    outMetaData[i, 5] <- exifInfo[1,"GimbalRollDegree"]
-    outMetaData[i, 6] <- exifInfo[1,"GimbalYawDegree"]
-    outMetaData[i, 7] <- exifInfo[1,"GimbalPitchDegree"]
-    
+    outMetaData[i, 2] <- as.numeric(exifInfo[1,"GPSAltitude"])
+    outMetaData[i, 3] <- as.numeric(exifInfo[1,"GPSLatitude"])
+    outMetaData[i, 4] <- as.numeric(exifInfo[1,"GPSLongitude"])
+    outMetaData[i, 5] <- as.numeric(exifInfo[1,"GimbalRollDegree"])
+    outMetaData[i, 6] <- as.numeric(exifInfo[1,"GimbalYawDegree"])
+    outMetaData[i, 7] <- as.numeric(exifInfo[1,"GimbalPitchDegree"])
+	  outMetaData[i, 8] <- as.numeric(exifInfo[1,"RelativeAltitude"])
+
+	
+	
     setTxtProgressBar(pb,i)
+  }
+  
+  
+  if(!is.null(takeoffHeight)){
+    outMetaData <- outMetaData %>% mutate(raltuav = takeoffHeight + ralt)
   }
   
   write.csv(outMetaData, paste(inputFolder,"/_imageMetadata.csv",sep=""),
             row.names = FALSE, quote = FALSE)
+  
+  return(outMetaData)
 }
 
 
