@@ -13,21 +13,51 @@ Tools for processing DJI's image data from Unoccupied Aerial Vehicles (UAV) in R
 
 
 
-# TUTORIALS
-
-## I. Running altitude corrections in Agisoft Metashape using image exif metadata and barometric height measurements
-
 ## Required tools
 
-- Install R | https://cran.r-project.org/bin/windows/base
 
-- Install RStudio Desktop | https://www.rstudio.com 
+- Install _R_ | https://cran.r-project.org/bin/windows/base
 
-- Install exifTool | https://exiftool.org 
+- Install _RStudio Desktop_ | https://www.rstudio.com 
+
+- Install _exifTool_ | https://exiftool.org 
 
 - Install required R packages (run the line below in the R console): `` install.packages(c("Thermimage", "exiftoolr", "dplyr", "raster", "tools")) ``
 
 - Install Git (optional) | https://git-scm.com/downloads 
+
+
+## Example 
+
+Here goes a simple example of UAV_Tools:
+
+
+```r
+
+
+# Load the functions/utilities
+source("UAVtools_Lib.R")
+
+# Configure exif tools executable
+configure_exiftoolr(
+  command = "exiftool.exe",
+  perl_path = NULL,
+  allow_win_exe = TRUE,
+  quiet = FALSE
+)
+
+# Load image metadata and use a correction of height based on the
+# DJI P4 barometer
+imgMeta <-  getImageMetadata(inputFolder   = "./MySurveyData",
+                   inputFileType = "JPG", 
+                   takeoffHeight = 70)
+
+```
+
+
+# TUTORIALS
+
+## I. Running altitude corrections in Agisoft Metashape using image exif metadata and barometric height measurements
 
 
 ## Pre-processing preparation
@@ -47,7 +77,7 @@ Input that value in function ``getImageMetadata()`` parameter _takeoffHeight_
 
 - Open/Load script_getImageMetadata.R in RStudio
 
-- Set exiftool.exe location in function ``configure_exiftool()``
+- Set _exiftool.exe_ (executable file) location in function ``configure_exiftool()``
 
 - Define the input folder where the UAV images are located and take-off height in the script
 
