@@ -18,9 +18,15 @@ getImageMetadata <- function(inputFolder, inputFileType="jpg", takeoffHeight=NUL
   
   outMetaData <- as.data.frame(outMetaData)
   
-  metaTags <- c("GPSAltitude","GPSLatitude","GPSLongitude",
-                "GimbalRollDegree","GimbalYawDegree",
-				"GimbalPitchDegree","RelativeAltitude")
+  metaTags <- c(
+    "GPSAltitude",
+    "GPSLatitude",
+    "GPSLongitude",
+    "GimbalRollDegree",
+    "GimbalYawDegree",
+		"GimbalPitchDegree",
+		"RelativeAltitude"
+    )
   
   cat("\n\nRetrieving image metadata:\n\n")
   
@@ -42,6 +48,7 @@ getImageMetadata <- function(inputFolder, inputFileType="jpg", takeoffHeight=NUL
 	
 	
     setTxtProgressBar(pb,i)
+    
   }
   
   
