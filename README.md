@@ -7,18 +7,9 @@ Tools for processing DJI's image data from Unoccupied Aerial Vehicles (UAV) in R
 
 | Function name                   | Description                                               |
 |:--------------------------------|:----------------------------------------------------------|
-
-| _getImageMetadata()_            | Retrieves geographical metadata from DJI images and enables 
-                                    altitude corrections  to be applied based on barometric 
-                                    heights (useful for Phantom 4 for instance - see tutorial 
-                                    below)                                                    |
-                                    
-| _convertToThermalImage()_       | Retrieves metadata from DJI thermal imagery and converts 
-                                    raw thermal data into temperature (°C)                    |
-                                    
-| _convertAllImagesToThermal()_   | Converts all thermal images in a folder from raw thermal 
-                                    data into temperature (°C)                                |
-
+| _getImageMetadata()_            | Retrieves geographical metadata from DJI images and enables altitude corrections  to be applied based on barometric heights (useful for Phantom 4 for instance - see tutorial below)                                                    |
+| _convertToThermalImage()_       | Retrieves metadata from DJI thermal imagery and converts raw thermal data into temperature (°C)                    |
+| _convertAllImagesToThermal()_   | Converts all thermal images in a folder from raw thermal data into temperature (°C)                                |
 
 
 
