@@ -6,9 +6,9 @@ library(tools)
 library(dplyr)
 
 
-getImageMetadata <- function(inputFolder, inputFileType="jpg", takeoffHeight=NULL){
+getImageMetadata <- function(inputFolder, inputFileType="jpg", takeoffHeight=NULL, ...){
   
-  fl <- list.files(inputFolder,pattern = paste(".",inputFileType,"$",sep=""), full.names = TRUE)
+  fl <- list.files(inputFolder,pattern = paste(".",inputFileType,"$",sep=""), full.names = TRUE, ...)
   #print(fl)
   
   outMetaData <- matrix(NA, nrow = length(fl),ncol = 8,

@@ -1,7 +1,7 @@
 
 # Load the functions/utilities
 
-source("UAVtools_Lib.R")
+source("./RCODE/UAVtools_Lib.R")
 
 # Configure exif tools executable
 
@@ -16,6 +16,17 @@ configure_exiftoolr(
 # Load image metadata and use a correction of height based on the
 # DJI P4 barometer
 
-imgMeta <-  getImageMetadata(inputFolder   = "./MySurveyData",
+imgMeta <-  getImageMetadata(inputFolder   = "C:/Users/JG/Desktop/CG_voo_fotogrametrico-20230531-v01/",
                              inputFileType = "JPG", 
-                             takeoffHeight = 70)
+                             takeoffHeight = 109.66,
+                             recursive = TRUE)
+
+imgMeta <- imgMeta %>% mutate(ralt_uav = raltuav - 1.585)
+
+head(imgMeta)
+
+
+
+write.csv(imgMeta,
+          "C:/Users/JG/Desktop/CG_voo_fotogrametrico-20230531-v01/_imageMetadata_v2.csv",
+          row.names = FALSE)
